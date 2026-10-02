@@ -1,0 +1,98 @@
+name: Lean
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and audit main theorems
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      LEAN_NUM_THREADS: 2
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Install the pinned Lean toolchain
+        uses: leanprover/lean-action@f061402b660e0c34644504b324e830f2991d4865 # v1
+        with:
+          auto-config: "false"
+          build: "false"
+          test: "false"
+          lint: "false"
+          use-mathlib-cache: "false"
+          use-github-cache: "false"
+
+      - name: Download the imported mathlib dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import pathlib
+          import re
+          import subprocess
+
+          sources = [pathlib.Path("Nikoghosyan.lean"), *pathlib.Path("Nikoghosyan").rglob("*.lean")]
+          modules = set()
+          for source in sources:
+              for line in source.read_text(encoding="utf-8").splitlines():
+                  match = re.match(r"\s*(?:public\s+)?import\s+(.+)", line)
+                  if match:
+                      modules.update(
+                          module for module in match.group(1).split()
+                          if re.fullmatch(r"Mathlib(?:\.[A-Za-z_][A-Za-z_0-9]*)*", module)
+                      )
+          if not modules:
+              raise SystemExit("No mathlib imports found; refusing an unbounded cache download.")
+          print(f"Downloading the transitive cache for {len(modules)} mathlib imports", flush=True)
+          subprocess.run(["lake", "exe", "cache", "get", *sorted(modules)], check=True)
+          PY
+          git diff --exit-code -- lean-toolchain lake-manifest.json
+
+      - name: Build the complete main library
+        run: lake build Nikoghosyan
+
+      - name: Build every prerequisite module
+        run: lake build NikoghosyanPrerequisites
+
+      - name: Check the transitive axioms of both main theorems
+        shell: bash
+        run: |
+          set -euo pipefail
+          audit_file="$RUNNER_TEMP/NikoghosyanAxiomAudit.lean"
+          cat > "$audit_file" <<'LEAN'
+          import Nikoghosyan.Main
+          import Lean.Util.CollectAxioms
+
+          #print axioms Nikoghosyan.exists_spanning_graphCycle_of_oneTough_noInducedP4UnionP1
+          #print axioms Nikoghosyan.isHamiltonian_of_oneTough_noInducedP4UnionP1
+
+          open Lean in
+          run_cmd do
+            let targets : Array Name := #[
+              ``Nikoghosyan.exists_spanning_graphCycle_of_oneTough_noInducedP4UnionP1,
+              ``Nikoghosyan.isHamiltonian_of_oneTough_noInducedP4UnionP1]
+            let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
+            for target in targets do
+              unless (← getEnv).contains target do
+                throwError "Missing main theorem: {target}"
+              let axioms ← Lean.collectAxioms target
+              let unexpected := axioms.filter fun axiomName => !allowed.contains axiomName
+              unless unexpected.isEmpty do
+                throwError "Unexpected axioms in {target}: {unexpected.toList}"
+          LEAN
+          lake env lean "$audit_file"

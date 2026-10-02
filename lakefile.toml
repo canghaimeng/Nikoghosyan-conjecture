@@ -1,0 +1,64 @@
+name = "Nikoghosyan"
+version = "0.1.0"
+defaultTargets = ["Nikoghosyan"]
+
+[[require]]
+name = "mathlib"
+git = "https://github.com/leanprover-community/mathlib4.git"
+rev = "v4.34.1"
+
+[[lean_lib]]
+name = "Nikoghosyan"
+globs = [
+  "Nikoghosyan",
+  "Nikoghosyan.Basic",
+  "Nikoghosyan.Paths",
+  "Nikoghosyan.PathCover",
+  "Nikoghosyan.Factor",
+  "Nikoghosyan.CycleAssembly",
+  "Nikoghosyan.PathCoverCuts",
+  "Nikoghosyan.FactorAssembly",
+  "Nikoghosyan.FactorAuxiliary",
+  "Nikoghosyan.FactorAuxiliaryClosure",
+  "Nikoghosyan.Cograph.+",
+  "Nikoghosyan.CographFactorPorts",
+  "Nikoghosyan.FactorColoredCycle",
+  "Nikoghosyan.FactorCycleIndex",
+  "Nikoghosyan.FactorPCExtraction",
+  "Nikoghosyan.AllCographStructure",
+  "Nikoghosyan.EndpointSeamAssembly",
+  "Nikoghosyan.AllCographFactor",
+  "Nikoghosyan.InducedCutTransport",
+  "Nikoghosyan.TraceableExtension",
+  "Nikoghosyan.CycleInsertion",
+  "Nikoghosyan.VertexInsertion",
+  "Nikoghosyan.HamiltonianPrefix",
+  "Nikoghosyan.PathRotation",
+  "Nikoghosyan.CycleSwitches",
+  "Nikoghosyan.PathIncidences",
+  "Nikoghosyan.CycleIncidences",
+  "Nikoghosyan.PathBlockInsertion",
+  "Nikoghosyan.CycleEdgePieces",
+  "Nikoghosyan.PathBoundaryReturn",
+  "Nikoghosyan.CycleEdgeRetention",
+  "Nikoghosyan.PathGraphRestriction",
+  "Nikoghosyan.PathCoverEndpointMerges",
+  "Nikoghosyan.CarrierGraphEmbedding",
+  "Nikoghosyan.PathCoverGraphEmbedding",
+  "Nikoghosyan.NoncographUnion",
+  "Nikoghosyan.InsertionCompletion",
+  "Nikoghosyan.TwoCycles",
+  "Nikoghosyan.NormalForm",
+  "Nikoghosyan.NormalGroups",
+  "Nikoghosyan.Locality",
+  "Nikoghosyan.ExtendedCuts",
+  "Nikoghosyan.ExtendedCutAssembly",
+  "Nikoghosyan.NonadjacentRows",
+  "Nikoghosyan.RemainingCase",
+  "Nikoghosyan.Main",
+  "Nikoghosyan.Absorption.+",
+]
+
+[[lean_lib]]
+name = "NikoghosyanPrerequisites"
+globs = ["Nikoghosyan.Prerequisites.+"]
