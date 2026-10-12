@@ -95,3 +95,20 @@ import Nikoghosyan.Main
 Copyright and license notices are retained in the source files. The
 Apache 2.0 license text referenced by applicable source headers is
 provided in [`LICENSE`](LICENSE).
+
+## Euler research workflow
+
+This proof and its Lean formalization are part of the [Euler](https://github.com/canghaimeng/Euler) mathematical research project. Their development used agent-assisted proof exploration, review, and formalization workflows. Euler supports the organization and inspection of mathematical statements, proof dependencies, research records, and verification evidence.
+
+The [Euler case study](https://github.com/canghaimeng/Euler/tree/main/examples/nikoghosyan) describes the result, its significance, and the development history across these workflows.
+
+To cite the Euler software:
+
+```bibtex
+@software{chen2026euler,
+  author = {Chen, Qiuyu},
+  title  = {Euler: Human-Centered Mathematical Research with Frontier-Driven Agents},
+  year   = {2026},
+  url    = {https://github.com/canghaimeng/Euler}
+}
+```
