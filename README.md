@@ -108,7 +108,7 @@ To cite the Euler software:
 
 ```bibtex
 @software{chen2026euler,
-  author = {Chen, Qiuyu and Wang, Qi and Xu, Liang and Xie, Baao and Zeng, Wenjun},
+  author = {Chen, Qiuyu and Wang, Qi and Xu, Liang and Jin, Xin and Xie, Baao and Zeng, Wenjun},
   title  = {Euler: Human-Centered Mathematical Research with Frontier-Driven Agents},
   year   = {2026},
   url    = {https://github.com/canghaimeng/Euler}
