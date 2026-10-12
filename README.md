@@ -102,7 +102,7 @@ This proof and its Lean formalization are part of the [Euler](https://github.com
 
 The [Euler case study](https://github.com/canghaimeng/Euler/tree/main/examples/nikoghosyan) describes the result, its significance, and the development history across these workflows.
 
-[Explore the interactive proof visualization](https://canghaimeng.site/euler/cases/?project=nikoghosyan): follow the proof dependencies, recorded research routes, and source-linked arguments in English or Chinese. This public research snapshot supports reading and graph navigation; team messaging, restoration, and model calls are disabled.
+[Explore the interactive proof visualization](https://canghaimeng.site/euler/cases/?project=nikoghosyan&lang=en): follow the proof dependencies, recorded research routes, and source-linked arguments in English or Chinese. This public research snapshot supports reading and graph navigation; team messaging, restoration, and model calls are disabled.
 
 To cite the Euler software:
 
